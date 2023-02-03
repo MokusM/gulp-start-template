@@ -1,0 +1,10 @@
+// базовые подключения
+@import 'utils/_vars';
+@import 'base/_fonts';
+@import 'base/_reset';
+@import 'utils/_mixins';
+@import 'utils/_settings';
+
+// подключения компонентов страницы
+@import './components/header';
+@import './components/footer';

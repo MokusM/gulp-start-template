@@ -1,0 +1,56 @@
+//main styles
+
+.main-wrapper {
+	padding: 0 0 0 0;
+	min-width: var(--content-min-width);
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.wrapper {
+	min-width: var(--content-min-width);
+	padding: 0 var(--container-offset);
+	max-width: var(--container-width);
+	margin: 0 auto;
+	position: relative;
+}
+.content {
+	min-width: var(--content-min-width);
+	text-align: left;
+	width: 100%;
+	order: 2;
+	flex-grow: 1;
+}
+
+/* titles */
+p {
+	padding: 15px 0;
+	font-weight: 700;
+	font-size: var(--text-md);
+	color: var(--text-color);
+}
+h1 {
+	//font-family: var(--font-primary);
+	color: var(--text-color);
+	font-size: var(--heading-h1);
+	padding: 15px 0 15px 0;
+	font-weight: 400;
+}
+h2 {
+	//font-family: var(--font-primary);
+	font-size: var(--heading-h2);
+	color: var(--text-color);
+	padding: 15px 0 15px 0;
+	font-weight: 400;
+}
+h3 {
+	//font-family: var(--font-primary);
+	font-size: var(--heading-h3);
+	color: var(--text-color);
+	padding: 15px 0 15px 0;
+	font-weight: 400;
+}

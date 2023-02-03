@@ -1,0 +1,55 @@
+// если вы хотите использовать sass-переменные - удалите root
+// colors
+:root {
+	// base
+	--content-width: 1170px;
+	--content-min-width: 1170px;
+	--container-offset: 15px;
+	--container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+	--default-transition: 0.2s;
+
+	// Typography
+	--font-family: 'Open Sans', sans-serif;
+	//--font-primary: 'Open-Sans', sans-serif;
+
+	--heading-h1: 48px;
+	--heading-h2: 26px;
+	--heading-h3: 24px;
+	--heading-h4: 20px;
+	--heading-h5: 14px;
+	--heading-h6: 12px;
+
+	--text-xl: 18px;
+	--text-lg: 16px;
+	--text-md: 14px;
+	--text-sm: 12px;
+	--text-xs: 10px;
+
+	// Colors
+
+	// Main
+	--base-bg: #fff;
+	--link-color: #3a26f5;
+	--text-color: #000;
+
+	--primary: #3a26f5;
+	--primary-hover: #2a17d8;
+
+	--secondary: #3985f6;
+	--secondary-hover: #2b6dd1;
+
+	// Alerts
+	--success: #1dc88a;
+	--success-hover: #0ea46e;
+
+	--warning: #f1d857;
+	--warning-hover: #e1c532;
+
+	--danger: #ff4747;
+	--danger-hover: #dd3333;
+
+	--disabled: #a0aec0;
+	--separator-color: #dedede;
+
+	// Additional Colors
+}
