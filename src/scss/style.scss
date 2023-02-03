@@ -1,10 +1,9 @@
-// базовые подключения
+// Base Style
 @import 'utils/_vars';
+@import 'utils/_mixins';
 @import 'base/_fonts';
 @import 'base/_reset';
-@import 'utils/_mixins';
 @import 'utils/_settings';
 
-// подключения компонентов страницы
 @import './components/header';
 @import './components/footer';

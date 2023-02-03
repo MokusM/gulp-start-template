@@ -1,7 +1,3 @@
-import './_vendor';
-import vars from './_vars';
-import './_functions';
-import './_components';
 $(window).on('load', function () {
 	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
 		$('body').addClass('ios');

@@ -6,7 +6,7 @@ body {
 	height: 100%;
 	line-height: 1;
 	position: relative;
-	font-size: var(--font-family);
+	font-size: var(--text-md);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -144,8 +144,6 @@ textarea {
 	font-family: var(--font-family);
 	outline: none;
 	border-radius: 0;
-	-moz-border-radius: 0;
-	-webkit-border-radius: 0;
 	-webkit-appearance: none;
 }
 
