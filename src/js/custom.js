@@ -1,20 +1,15 @@
+//Custom JS code
+
 $(window).on('load', function () {
-	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+	if (/android/i.test(userAgent)) {
+		$('body').addClass('android');
+	} else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
 		$('body').addClass('ios');
 	} else {
 		$('body').addClass('web');
 	}
-	setTimeout(function () {
-		$('.js-bg').each(function () {
-			$(this).css('background-image', 'url(' + $(this).data('preload') + ')');
-		});
-		$('.js-img').each(function () {
-			$(this).attr('src', $(this).data('src'));
-		});
-	}, 200);
-	setTimeout(function () {
-		$('body').removeClass('loaded');
-	}, 400);
 });
 
 /* viewport width */
@@ -41,73 +36,9 @@ $(function () {
 		});
 	});
 	/* placeholder*/
-
-	$('.button-nav').click(function () {
-		$(this).toggleClass('active'), $('.main-nav-list').slideToggle();
-		return false;
-	});
-
 	/* components */
 
-	/*
-	
-	if($('.styled').length) {
-		$('.styled').styler();
-	};
-	if($('.fancybox').length) {
-		$('.fancybox').fancybox({
-			margin  : 10,
-			padding  : 10
-		});
-	};
-	if($('.slick-slider').length) {
-		$('.slick-slider').slick({
-			dots: true,
-			infinite: false,
-			speed: 300,
-			slidesToShow: 4,
-			slidesToScroll: 4,
-			responsive: [
-				{
-				  breakpoint: 1024,
-				  settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: true,
-					dots: true
-				  }
-				},
-				{
-				  breakpoint: 600,
-				  settings: "unslick"
-				}				
-			]
-		});
-	};
-	if($('.scroll').length) {
-		$(".scroll").mCustomScrollbar({
-			axis:"x",
-			theme:"dark-thin",
-			autoExpandScrollbar:true,
-			advanced:{autoExpandHorizontalScroll:true}
-		});
-	};
-	
-	*/
+	// Options for plugins
 
 	/* components */
 });
-
-var handler = function () {
-	var height_footer = $('footer').height();
-	var height_header = $('header').height();
-	//$('.content').css({'padding-bottom':height_footer+40, 'padding-top':height_header+40});
-
-	var viewport_wid = viewport().width;
-	var viewport_height = viewport().height;
-
-	if (viewport_wid <= 991) {
-	}
-};
-$(window).bind('load', handler);
-$(window).bind('resize', handler);

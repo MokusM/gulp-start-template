@@ -13,17 +13,18 @@ const fileInclude = require('gulp-file-include');
 const rev = require('gulp-rev');
 const revRewrite = require('gulp-rev-rewrite');
 const revDel = require('gulp-rev-delete-original');
-const htmlmin = require('gulp-htmlmin');
 const gulpif = require('gulp-if');
 const notify = require('gulp-notify');
 const image = require('gulp-imagemin');
 const { readFileSync } = require('fs');
 const webp = require('gulp-webp');
 const mainSass = gulpSass(sass);
-const webpackStream = require('webpack-stream');
 const plumber = require('gulp-plumber');
 const path = require('path');
 const zip = require('gulp-zip');
+const concat = require('gulp-concat');
+const babel = require('gulp-babel');
+const uglify = require('gulp-uglify-es').default;
 const rootFolder = path.basename(path.resolve());
 
 // paths
@@ -35,7 +36,7 @@ const paths = {
 	buildImgFolder: `${buildFolder}/img`,
 	srcScss: `${srcFolder}/scss/**/*.scss`,
 	buildCssFolder: `${buildFolder}/css`,
-	srcFullJs: `${srcFolder}/js/**/*.js`,
+	srcFullJs: `${srcFolder}/js/components/*.js`,
 	srcMainJs: `${srcFolder}/js/custom.js`,
 	buildJsFolder: `${buildFolder}/js`,
 	srcPartialsFolder: `${srcFolder}/partials`,
@@ -102,65 +103,17 @@ const styles = () => {
 				overrideBrowserslist: ['last 5 versions'],
 			})
 		)
-		.pipe(
-			gulpif(
-				isProd,
-				cleanCSS({
-					level: 2,
-				})
-			)
-		)
+		.pipe(gulpif(isProd, cleanCSS({ level: { 1: { specialComments: 0 } }, format: 'keep-breaks' })))
 		.pipe(dest(paths.buildCssFolder, { sourcemaps: '.' }))
 		.pipe(browserSync.stream());
 };
 
 // scripts
-const scripts = () => {
-	return src(paths.srcMainJs)
-		.pipe(
-			plumber(
-				notify.onError({
-					title: 'JS',
-					message: 'Error: <%= error.message %>',
-				})
-			)
-		)
-		.pipe(
-			webpackStream({
-				mode: isProd ? 'production' : 'development',
-				output: {
-					filename: 'custom.js',
-				},
-				module: {
-					rules: [
-						{
-							test: /\.m?js$/,
-							exclude: /node_modules/,
-							use: {
-								loader: 'babel-loader',
-								options: {
-									presets: [
-										[
-											'@babel/preset-env',
-											{
-												targets: 'defaults',
-											},
-										],
-									],
-								},
-							},
-						},
-					],
-				},
-				devtool: !isProd ? 'source-map' : false,
-			})
-		)
-		.on('error', function (err) {
-			console.error('WEBPACK ERROR', err);
-			this.emit('end');
-		})
-		.pipe(dest(paths.buildJsFolder))
-		.pipe(browserSync.stream());
+const libsScripts = () => {
+	return src(paths.srcFullJs).pipe(concat('libs.js')).pipe(babel()).pipe(uglify(/* options */)).pipe(dest(paths.buildJsFolder)).pipe(browserSync.stream());
+};
+const customScripts = () => {
+	return src(paths.srcMainJs).pipe(babel()).pipe(dest(paths.buildJsFolder)).pipe(browserSync.stream());
 };
 
 const resources = () => {
@@ -212,7 +165,8 @@ const watchFiles = () => {
 	});
 
 	watch(paths.srcScss, styles);
-	watch(paths.srcFullJs, scripts);
+	watch(paths.srcFullJs, libsScripts);
+	watch(paths.srcMainJs, customScripts);
 	watch(`${paths.srcPartialsFolder}/*.html`, htmlInclude);
 	watch(`${srcFolder}/*.html`, htmlInclude);
 	watch(`${paths.resourcesFolder}/**`, resources);
@@ -250,16 +204,6 @@ const rewrite = () => {
 		.pipe(dest(buildFolder));
 };
 
-const htmlMinify = () => {
-	return src(`${buildFolder}/**/*.html`)
-		.pipe(
-			htmlmin({
-				collapseWhitespace: true,
-			})
-		)
-		.pipe(dest(buildFolder));
-};
-
 const zipFiles = (done) => {
 	del.sync([`${buildFolder}/*.zip`]);
 	return src(`${buildFolder}/**/*.*`, {})
@@ -280,9 +224,9 @@ const toProd = (done) => {
 	done();
 };
 
-exports.default = series(clean, htmlInclude, scripts, styles, resources, images, webpImages, svgSprites, watchFiles);
+exports.default = series(clean, htmlInclude, libsScripts, customScripts, styles, resources, images, webpImages, svgSprites, watchFiles);
 
-exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, webpImages, svgSprites, htmlMinify);
+exports.build = series(toProd, clean, htmlInclude, libsScripts, customScripts, styles, resources, images, webpImages, svgSprites);
 
 exports.cache = series(cache, rewrite);
 
